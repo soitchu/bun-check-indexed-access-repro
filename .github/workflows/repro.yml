@@ -1,0 +1,15 @@
+name: repro
+on: [push, workflow_dispatch]
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: canary
+      - run: bun --revision
+      - name: bun check (passes, should not)
+        run: bun check
+      - name: tsc 7.0.2 (reports TS2345)
+        run: bunx -p typescript@7.0.2 tsc -p . --pretty false
